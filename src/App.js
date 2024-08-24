@@ -1,24 +1,38 @@
-import logo from './logo.svg';
+
+
+import axios from 'axios'
+import React, { useState, useEffect } from 'react';
+
 import './App.css';
 
 function App() {
+  const [jokes,setJokes]=useState([]);
+ 
+    
+   const ShowText = useEffect(()=>{
+      
+      axios.get('/api/jokes')
+        .then((response)=>{
+          
+          setJokes(response.data)
+        })
+          .catch((error)=>{console.log(error)})}
+      )
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+    <h1>Hello World</h1>
+    <h4> Total Jokes:{jokes.length}</h4>
+    {jokes.map((jokes)=>(
+      <div key={jokes.id}>
+        <h2>{jokes.tittle}</h2>
+        <h3>{jokes.content}</h3>
+       
+      </div>
+    
+    ))}
+    <button onClick={ShowText}>Api Show</button>
+    </>
   );
 }
 
