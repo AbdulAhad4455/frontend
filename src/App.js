@@ -6,32 +6,43 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 
 function App() {
-  const [jokes,setJokes]=useState([]);
- 
+  const [todos,setTodos]=useState([]);
+  const [users,setUser]=useState([])
     
-   const ShowText = useEffect(()=>{
+   useEffect(()=>{
       
-      axios.get('/api/jokes')
+      axios.get('/todos')
         .then((response)=>{
           
-          setJokes(response.data)
+          setTodos(response.data)
         })
           .catch((error)=>{console.log(error)})}
       )
+      useEffect(()=>{
+      
+        axios.get('/users')
+          .then((response)=>{
+            
+            setUser(response.data)
+          })
+            .catch((error)=>{console.log(error)})}
+        )
   
   return (
     <>
-    <h1>Hello World</h1>
-    <h4> Total Jokes:{jokes.length}</h4>
-    {jokes.map((jokes)=>(
-      <div key={jokes.id}>
-        <h2>{jokes.tittle}</h2>
-        <h3>{jokes.content}</h3>
+    <h1>Todo App</h1>
+    <h4> Total Todos:{`${todos.length}\nUser:${users.length}`}</h4>
+    {todos.map((todos,users)=>(
+      <div key={`${users.id}${todos.id}`}>
+        <h2>{`User:${todos.user.username}  Todo:${todos.text} iscomplete = ${todos.isCompleted}` }</h2>
+        
+        
+        
        
       </div>
     
     ))}
-    <button onClick={ShowText}>Api Show</button>
+   
     </>
   );
 }
